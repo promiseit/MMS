@@ -1,0 +1,77 @@
+[
+  {
+    "difficulty": 1,
+    "title": "职场入门",
+    "description": "简单的职场英文词汇",
+    "words": [
+      {"word": "HELLO", "hint": "问候语"},
+      {"word": "EMAIL", "hint": "电子邮件"},
+      {"word": "TEAM", "hint": "团队"},
+      {"word": "TASK", "hint": "任务"},
+      {"word": "TIME", "hint": "时间"},
+      {"word": "WORK", "hint": "工作"},
+      {"word": "DAY", "hint": "天"},
+      {"word": "JOB", "hint": "职位"}
+    ]
+  },
+  {
+    "difficulty": 2,
+    "title": "职场基础",
+    "description": "基本的办公英文短语",
+    "words": [
+      {"word": "MEETING", "hint": "会议"},
+      {"word": "REPORT", "hint": "报告"},
+      {"word": "PROJECT", "hint": "项目"},
+      {"word": "PHONE", "hint": "电话"},
+      {"word": "DESK", "hint": "办公桌"},
+      {"word": "FILE", "hint": "文件"},
+      {"word": "PLAN", "hint": "计划"},
+      {"word": "GOAL", "hint": "目标"}
+    ]
+  },
+  {
+    "difficulty": 3,
+    "title": "职场进阶",
+    "description": "常用的商务英文表达",
+    "words": [
+      {"word": "DEADLINE", "hint": "截止日期"},
+      {"word": "PRESENT", "hint": "展示"},
+      {"word": "PROGRESS", "hint": "进度"},
+      {"word": "FEEDBACK", "hint": "反馈"},
+      {"word": "BUDGET", "hint": "预算"},
+      {"word": "CLIENT", "hint": "客户"},
+      {"word": "SCHEDULE", "hint": "日程"},
+      {"word": "PRIORITY", "hint": "优先级"}
+    ]
+  },
+  {
+    "difficulty": 4,
+    "title": "职场熟练",
+    "description": "复杂的专业英文术语",
+    "words": [
+      {"word": "PRESENTATION", "hint": "演示"},
+      {"word": "COMMUNICATION", "hint": "沟通"},
+      {"word": "RESPONSIBILITY", "hint": "责任"},
+      {"word": "OPPORTUNITY", "hint": "机会"},
+      {"word": "ORGANIZATION", "hint": "组织"},
+      {"word": "MANAGEMENT", "hint": "管理"},
+      {"word": "DEVELOPMENT", "hint": "发展"},
+      {"word": "IMPLEMENTATION", "hint": "实施"}
+    ]
+  },
+  {
+    "difficulty": 5,
+    "title": "职场独立",
+    "description": "高级商务英文沟通",
+    "words": [
+      {"word": "STRATEGIC", "hint": "战略的"},
+      {"word": "INNOVATION", "hint": "创新"},
+      {"word": "COLLABORATION", "hint": "合作"},
+      {"word": "SUSTAINABILITY", "hint": "可持续性"},
+      {"word": "GLOBALIZATION", "hint": "全球化"},
+      {"word": "DIVERSIFICATION", "hint": "多样化"},
+      {"word": "TRANSFORMATION", "hint": "转型"},
+      {"word": "OPTIMIZATION", "hint": "优化"}
+    ]
+  }
+]

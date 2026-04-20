@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:autism_work_integration_tool/src/services/service_locator.dart';
+import 'package:autism_work_integration_tool/src/services/json_service.dart';
+import 'package:autism_work_integration_tool/src/services/logger_service.dart';
 
 class GameProvider extends ChangeNotifier {
   int _totalGamesPlayed = 0;
@@ -29,34 +31,24 @@ class GameProvider extends ChangeNotifier {
       _totalScore = storage.getInt('totalScore', 0);
       _level = storage.getInt('level', 1);
       
-      // 加载游戏分数
-      final gameScores = storage.getString('gameScores');
-      if (gameScores != null && gameScores.isNotEmpty) {
-        try {
-          _gameScores = _parseMapString(gameScores);
-        } catch (e) {
-          // 解析失败时使用空映射
-          _gameScores = {};
-        }
+      final gameScoresJson = storage.getString('gameScores');
+      if (gameScoresJson != null && gameScoresJson.isNotEmpty) {
+        _gameScores = JsonService.decodeMap(gameScoresJson);
       }
       
-      // 加载游戏等级
-      final gameLevels = storage.getString('gameLevels');
-      if (gameLevels != null && gameLevels.isNotEmpty) {
-        try {
-          _gameLevels = _parseMapString(gameLevels);
-        } catch (e) {
-          // 解析失败时使用空映射
-          _gameLevels = {};
-        }
+      final gameLevelsJson = storage.getString('gameLevels');
+      if (gameLevelsJson != null && gameLevelsJson.isNotEmpty) {
+        _gameLevels = JsonService.decodeMap(gameLevelsJson);
       }
-    } catch (e) {
-      // 处理任何异常，确保应用不会崩溃
+      
+      LoggerService.debug('游戏数据加载成功');
+    } catch (e, stackTrace) {
       _totalGamesPlayed = 0;
       _totalScore = 0;
       _level = 1;
       _gameScores = {};
       _gameLevels = {};
+      LoggerService.error('加载游戏数据失败', e, stackTrace);
     } finally {
       notifyListeners();
     }
@@ -68,39 +60,12 @@ class GameProvider extends ChangeNotifier {
       await storage.saveInt('totalGamesPlayed', _totalGamesPlayed);
       await storage.saveInt('totalScore', _totalScore);
       await storage.saveInt('level', _level);
-      await storage.saveString('gameScores', _gameScores.toString());
-      await storage.saveString('gameLevels', _gameLevels.toString());
-    } catch (e) {
-      // 处理保存失败的情况，确保应用不会崩溃
+      await storage.saveString('gameScores', JsonService.encodeMap(_gameScores));
+      await storage.saveString('gameLevels', JsonService.encodeMap(_gameLevels));
+      LoggerService.debug('游戏数据保存成功');
+    } catch (e, stackTrace) {
+      LoggerService.error('保存游戏数据失败', e, stackTrace);
     }
-  }
-
-  Map<String, int> _parseMapString(String mapString) {
-    final Map<String, int> result = {};
-    try {
-      // 移除首尾的大括号
-      final cleanString = mapString.trim().substring(1, mapString.length - 1).trim();
-      if (cleanString.isEmpty) {
-        return result;
-      }
-      
-      // 分割键值对
-      final entries = cleanString.split(', ');
-      for (final entry in entries) {
-        final parts = entry.split(': ');
-        if (parts.length == 2) {
-          final key = parts[0].replaceAll('"', '').trim();
-          final valueStr = parts[1].trim();
-          final value = int.tryParse(valueStr);
-          if (value != null && key.isNotEmpty) {
-            result[key] = value;
-          }
-        }
-      }
-    } catch (e) {
-      // 解析失败时返回空映射
-    }
-    return result;
   }
 
   void updateGameScore(String gameName, int score) {
@@ -108,11 +73,11 @@ class GameProvider extends ChangeNotifier {
     _totalScore += score;
     _gameScores[gameName] = (_gameScores[gameName] ?? 0) + score;
     
-    // 计算等级
     _calculateLevel();
     
     _saveData();
     notifyListeners();
+    LoggerService.debug('更新游戏分数: $gameName +$score');
   }
 
   void updateGameLevel(String gameName, int level) {
@@ -120,11 +85,11 @@ class GameProvider extends ChangeNotifier {
       _gameLevels[gameName] = level;
       _saveData();
       notifyListeners();
+      LoggerService.debug('更新游戏等级: $gameName -> $level');
     }
   }
 
   void _calculateLevel() {
-    // 每1000分升一级
     _level = (_totalScore ~/ 1000) + 1;
   }
 
@@ -136,5 +101,6 @@ class GameProvider extends ChangeNotifier {
     _gameLevels = {};
     await _saveData();
     notifyListeners();
+    LoggerService.info('游戏进度已重置');
   }
 }
